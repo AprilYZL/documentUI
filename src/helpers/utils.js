@@ -18,36 +18,22 @@ export const CLASS_COLORS = {
   "Audit": "#817f75",       // soft stone gray
   "Endorsement": "#936639",// muted golden brown
   "Application": "#5a5d61",// charcoal gray
-  // "Letter": "#708d81",     // sage green
-  // "Report": "#577590",     // muted steel blue
 };
 
 export const formatDate = (iso) => new Date(iso).toLocaleDateString();
 
 export const classifications = [
   {
-    classification: "Loss Run",
-    description: "Historical claims data and loss experience",
-  },
-  {
-    classification: "Policy",
-    description: "Insurance policy documents and contracts",
+    classification: "Application",
+    description: "Insurance applications and forms",
   },
   {
     classification: "Audit",
     description: "Premium audit reports and worksheets",
   },
   {
-    classification: "Quote",
-    description: "Insurance quotes and proposals",
-  },
-  {
     classification: "Certificate",
     description: "Certificates of insurance",
-  },
-  {
-    classification: "Application",
-    description: "Insurance applications and forms",
   },
   {
     classification: "Endorsement",
@@ -58,7 +44,19 @@ export const classifications = [
     description: "Premium invoices and billing statements",
   },
   {
+    classification: "Loss Run",
+    description: "Historical claims data and loss experience",
+  },
+  {
     classification: "Other",
     description: "Any other insurance-related document",
+  },
+  {
+    classification: "Policy",
+    description: "Insurance policy documents and contracts",
+  },
+  {
+    classification: "Quote",
+    description: "Insurance quotes and proposals",
   },
 ];

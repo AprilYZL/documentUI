@@ -35,13 +35,13 @@ export const CustomModal = ({
 
     switch (variant) {
       case "danger":
-        return `${baseStyles} !bg-red-600 text-white hover:bg-red-700 focus:ring-red-500`;
+        return `${baseStyles} bg-red-600 text-white hover:bg-red-700 focus:ring-red-500`;
       case "primary":
-        return `${baseStyles} !bg-blue-500 text-white hover:bg-gray-800 focus:ring-gray-500`;
+        return `${baseStyles} bg-blue-500 text-white hover:bg-gray-800 focus:ring-gray-500`;
       case "secondary":
-        return `${baseStyles} !bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500`;
+        return `${baseStyles} bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500`;
       default:
-        return `${baseStyles} !bg-red-600 text-white hover:bg-red-700 focus:ring-red-500`;
+        return `${baseStyles} bg-red-600 text-white hover:bg-red-700 focus:ring-red-500`;
     }
   };
   if (!open) return null;

@@ -2,7 +2,7 @@
 import { UploadIcon } from 'lucide-react';
 import { createContext, useContext } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 import { cn } from '@/lib/utils';
 
 const renderBytes = (bytes) => {
@@ -47,9 +47,6 @@ export const Dropzone = ({
         return;
       }
       const file = acceptedFiles[0];
-      console.log("File name:", file.name);
-      console.log("File size:", file.size);
-      console.log("Preview URL:",file);
       onDrop?.(acceptedFiles, fileRejections, event);
     },
     ...props,

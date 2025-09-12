@@ -1,5 +1,4 @@
-// Custom hook for file upload management
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import axios from 'axios';
 import { toast } from "sonner";
 import { BASE_URL, X_API_KEY } from "@/helpers/utils";
@@ -12,7 +11,6 @@ const FileStatus = {
 
 const generateFileId = (file) => `${file.name}-${file.size}-${Date.now()}`;
 
-// API service - separated for better testing and reusability
 const documentService = {
     async classifyDocument(file, onProgress) {
         const formData = new FormData();
@@ -50,7 +48,6 @@ const documentService = {
 export const useClassifyDocument = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
-    // Memoized function to update specific file status
     const updateFileStatus = useCallback((fileId, updates) => {
         setUploadedFiles(prev => 
             prev.map(file => 
@@ -59,7 +56,6 @@ export const useClassifyDocument = () => {
         );
     }, []);
 
-    // Add new files to the state
     const addFiles = useCallback((files) => {
         const newFiles = files.map((file) => ({
             id: generateFileId(file),
@@ -77,12 +73,10 @@ export const useClassifyDocument = () => {
         return newFiles;
     }, []);
 
-    // Remove file from the list
     const removeFile = useCallback((fileId) => {
         setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
     }, []);
 
-    // Convert file to proper format if needed
     const convertToFile = useCallback(async (fileObj) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -103,7 +97,6 @@ export const useClassifyDocument = () => {
     // Process individual file
     const processFile = useCallback(async (fileData) => {
         try {
-            // Convert file to proper format if needed
             const file = fileData.originalFile.type === 'application/pdf' 
                 ? fileData.originalFile
                 : await convertToFile(fileData.originalFile);
@@ -123,7 +116,7 @@ export const useClassifyDocument = () => {
                 error: null,
             });
 
-            toast?.success(`Successfully classified: ${fileData.name}`);
+            toast.success(`Successfully classified: ${fileData.name}`);
         } catch (error) {
             updateFileStatus(fileData.id, {
                 status: FileStatus.ERROR,
@@ -131,11 +124,10 @@ export const useClassifyDocument = () => {
                 progress: 0,
             });
 
-            toast?.error(`Failed to process ${fileData.name}: ${error.message}`);
+            toast.error(`Failed to process ${fileData.name}: ${error.message}`);
         }
     }, [updateFileStatus, convertToFile]);
 
-    // Computed property for checking if all files are processed
     const allFilesProcessed = uploadedFiles.length > 0 && 
         uploadedFiles.every(file => file.status === FileStatus.COMPLETED);
 
