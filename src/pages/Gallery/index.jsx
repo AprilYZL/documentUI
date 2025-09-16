@@ -39,6 +39,7 @@ export const Gallery = () => {
   const setLimit = (newLimit) => {
     setLimitState(newLimit);
     setPage(1);
+    setCategory('all')
   };
 
   useEffect(() => {
@@ -46,6 +47,10 @@ export const Gallery = () => {
       toast.error(error.message);
     }
   }, [error]);
+
+  useEffect(()=>{
+    setCategory('all')
+  },[page])
 
   const filtered = useMemo(
     () =>
@@ -90,9 +95,9 @@ export const Gallery = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col justify-between items-center p-6">
+    <div className="min-h-screen w-full flex flex-col p-6">
       {/* Header/Filter Component */}
-      <div className="w-full h-auto">
+      <div className="flex-shrink-0 w-full">
         <button
           onClick={() => navigate("/")}
           className={`
@@ -116,7 +121,7 @@ export const Gallery = () => {
           />
           <div className="w-full lg:w-1/2 text-sm flex h-16 justify-center self-start items-stretch shadow-lg rounded-lg">
             <Select onValueChange={setCategory}>
-              <SelectTrigger className="w-full lg:w-[220px] !h-16">
+              <SelectTrigger className="w-full !h-16">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
@@ -146,32 +151,43 @@ export const Gallery = () => {
             </div>
           </div>
         </div>
+      </div>
         {/* Each Doc Card TODO:implement drag & drop */}
+      <div className="flex-1 min-h-100 w-full">
         <DndContext
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
-            {filtered.length === 0 && <div>No documents found.</div>}
-            {filtered.map((doc, index) => (
-              <DraggableDoc
-                key={doc.id}
-                doc={doc}
-                deleteInsuranceDoc={deleteInsuranceDoc}
-              />
-            ))}
+          <div className="h-full">
+            {filtered.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <p className="text-gray-500 text-lg">No documents found.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
+                {filtered.map((doc, index) => (
+                  <DraggableDoc
+                    key={doc.id}
+                    doc={doc}
+                    deleteInsuranceDoc={deleteInsuranceDoc}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </DndContext>
       </div>
 
       {/* Footer */}
-      <PaginationCombo
-        setPage={setPage}
-        setLimit={setLimit}
-        page={page}
-        limit={limit}
-        itemsOnCurrentPage={docs.length}
-      />
+      <div className="flex-shrink-0 w-full mt-6">
+        <PaginationCombo
+          setPage={setPage}
+          setLimit={setLimit}
+          page={page}
+          limit={limit}
+          itemsOnCurrentPage={docs.length}
+        />
+      </div>
     </div>
   );
 };

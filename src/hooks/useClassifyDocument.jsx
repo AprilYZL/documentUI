@@ -15,7 +15,6 @@ const documentService = {
     async classifyDocument(file, onProgress) {
         const formData = new FormData();
         formData.append('file', file);
-
         try {
             const response = await axios.post(
                 `${BASE_URL}/documents/classify`,
@@ -61,7 +60,6 @@ export const useClassifyDocument = () => {
             id: generateFileId(file),
             name: file.name,
             size: file.size,
-            type: 'Processing...',
             confidence: null,
             status: FileStatus.PROCESSING,
             progress: 0,
@@ -97,10 +95,7 @@ export const useClassifyDocument = () => {
     // Process individual file
     const processFile = useCallback(async (fileData) => {
         try {
-            const file = fileData.originalFile.type === 'application/pdf' 
-                ? fileData.originalFile
-                : await convertToFile(fileData.originalFile);
-
+            const file = await convertToFile(fileData.originalFile);
             const result = await documentService.classifyDocument(file, (progress) => {
                 updateFileStatus(fileData.id, { 
                     progress,
